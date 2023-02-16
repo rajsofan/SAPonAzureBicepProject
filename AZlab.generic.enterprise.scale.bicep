@@ -22,3 +22,16 @@ param globalTags object = {
   'Engine-EnvironmentType': 'Production'
   'Engine-DeployDate': utcNow('d')
 }
+
+param utcShort string
+
+param isDiagEnabled bool
+param requireCmksForStorageAccountEncryption bool
+param keyvaultName string
+param keyvaultKeyName string
+param dataProtectionEnabled bool
+param BYOL bool
+param isAntiMalwareEntensionEnabled bool
+param antimatlwareExclusionExtensionDC string
+param antimalwareExclusionPathDC string
+param antimalwareExclusion

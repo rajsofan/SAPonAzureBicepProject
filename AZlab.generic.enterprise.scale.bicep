@@ -34,4 +34,4 @@ param BYOL bool
 param isAntiMalwareEntensionEnabled bool
 param antimatlwareExclusionExtensionDC string
 param antimalwareExclusionPathDC string
-param antimalwareExclusion
+param antimalwareExclusion bool

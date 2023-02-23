@@ -1,21 +1,85 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-      "isVwan": {
-        "value": "false"
-      },
-      "deployVpnGW": {
-        "value": "false"
-      },
-     "isDiagEnabled": {
-        "value": "true"
-     },
-     "lawWorkspaceEnabled": {
-        "value": "true"
-     },
-     "hubVnetId": {
-        "value": "value"
-     }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "isVwan": {
+      "value": false
+    },
+    "deployVPNGW": {
+      "value": false
+    },
+    "isDiagEnabled": {
+      "value": true
+    },
+    "laWorkspaceID": {
+      "value": "/subscriptions/a14b6fe5-f739-4b09-a63a-99171f6f2984/rg-uks-engine-mgmt-oms-01/providers/microsoft.operationalinsights/workspaces/la-uks-engine-mgmt-01"
+    },
+    "hubVnetID": {
+      "value": ""
+    },
+    
+    "nvaIP": {
+      "value": "10.0.0.4"
+    },
+    "hubRouteTableName": {
+      "value": "UDR-UKS-GW-01"
+    },
+    "landingZoneModVnetRG": {
+      "value": "RG-UKS-ENGINE-LZ1-NETWORK-01"
+    },
+    "landingZoneRsvRG": {
+      "value": "RG-UKS-ENGINE-LZ1-RSV-01"
+    },
+    "location": {
+      "value": "uk south"
+    },
+    "landingZoneVnetName": {
+      "value": "VNET-UKS-LZ1-01"
+    },
+    "landingZoneVnetPrefix": {
+      "value": "10.0.4.0/22"
+    },
+    "landingZoneDefaultSubnetName": {
+      "value": "Application"
+    },
+    "landingZoneDefaultSubnetPrefix": {
+      "value": "10.0.4.0/24"
+    },
+    "routeTableName": {
+      "value": "UDR-UKS-LZ1-01"
+    },
+    "landingZoneDefaultNsgName": {
+      "value": "nsg-uks-lz1-default-01"
+    },
+    "dnsServers": {
+      "value": [
+        "10.0.2.4",
+        "10.0.2.5"
+      ]
+    },
+    "deployLandingZineRsv": {
+      "value": false
+    },
+    "landingZoneRsvName": {
+      "value": ""
+    },
+    "landingZoneRsvStorageType": {
+      "value": ""
+    },
+    "landingZoneEsvEnableCrossRegionRestore": {
+      "value": false
+    },
+    "vmBackupInclusionTag": {
+      "value": ""
+    },
+    "isPrimaryDeployment": {
+      "value": false
+    },
+    "deployDefenderForCloudPlans": {
+      "value": false
+    },
+    "ascOwnerEmail": {
+      "value": ""
     }
   }
+}

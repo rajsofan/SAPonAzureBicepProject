@@ -51,24 +51,6 @@ param defenderResourceTypes array = [
 
 param ascOwnerEmail string
 
-var hubVnetNameArray = split(hubVnetID,'/')
-var hubVnetName = hubVnetNameArray[8]
-var landingZoneSubnetsDefinitions = [
-
-  {
-    name: landingZoneDefaultSubnetName
-    properties: {
-      addressPrefix: landingZoneDefaultSubnetPrefix
-      networkSecurityGroup : {
-        id: landigZoneNSG.outputs.nsgID
-      }
-      routeTable: {
-        id: landingZoneUDR.outputs.id
-      }
-    }
-  }
-
-]
 
 // Create Resource Groups
 
@@ -77,52 +59,34 @@ resource lzRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
   location: location
 }
 
-resource rsvRG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
-  name: landingZoneRsvRG
-  location: location
-}
 
-//Deploy the virtual network for the landing zone module
-module landingZoneVnet '../vnet.module.bicep' = {
+
+
+//Deploy the virtual network for SAP Application
+
+module SAPApplicationVnet '../vnet.module.bicep' = {
   scope: resourceGroup(lzRG.name)
-  name: 'landingZoneVnet'
+  name: landingZoneVnetName
   params: {
-     vnetName: landingZoneVnetName
-     addressPrefix: landingZoneVnetPrefix
-     subnetPropertyObject: landingZoneSubnetsDefinitions
-     dnsServers: dnsServers
-     isDiagEnabled: isDiagEnabled
-     LAWworkspaceID: laWorkspaceID
-     
+    LAWworkspaceID: laWorkspaceID
+    vnetName: landingZoneVnetName
   }
 }
+
+
+
+
 
 //Deploy UDR for Landing Zone
-module landingZoneUDR '../routeTable.module.bicep' = {
-  scope: resourceGroup(lzRG.name)
-  name: 'landingZoneUDR'
-  params: {
-    nvaIP: nvaIP
-    routeTableName: routeTableName
-  }
-}
+
 
 //Deploy NSG for Landing Zone
 
-module landingZoneNSG '../networkSecurityGroup.module.bicep' = {
-  scope: resourceGroup(lzRG.name)
-  name: 'landingZoneNSG'
-  params: {
-    networkSecurityGroupNmae: landingZoneDefaultNsgName
-    LAWworkspaceID: laWorkspaceID
-    isDiagEnabled: isDiagEnabled
-  }
-}
 
 //peering
 //deploy hub<-> vent connection from landing zone
 
-module landingZonetoHUBVentConnection '../vnetPeering.module.bicep' = if ( !isVwan) {
+/*module landingZonetoHUBVentConnection '../vnetPeering.module.bicep' = if ( !isVwan) {
  name: 'DP-ENGINE-LZ-LOCALVNETPEERING'
  scope: resourceGroup(lzRG.name)
   params: {
@@ -133,8 +97,10 @@ module landingZonetoHUBVentConnection '../vnetPeering.module.bicep' = if ( !isVw
   }
   
 }
+*/
 
-module hubtoLandingZoneVnetConnection '../vnetPeering.module.bicep' = if ( !isVwan) {
+
+/* module hubtoLandingZoneVnetConnection '../vnetPeering.module.bicep' = if ( !isVwan) {
    name: 'DP-ENGINE-LZ-HUBVNETPEERING'
    scope: resourceGroup(hubVnetNameArray[2],hubVnetNameArray[4])
    params: {
@@ -147,8 +113,8 @@ module hubtoLandingZoneVnetConnection '../vnetPeering.module.bicep' = if ( !isVw
    
 
 }
+*/
 
-
-output vnetID string = landingZoneVnet.outputs.vnetID
-output udrID string = landingZoneUDR.outputs.id
-output nsgID string = landingZoneNSG.outputs.nsgID
+//output vnetID string = landingZoneVnet.outputs.vnetID
+//output udrID string = landingZoneUDR.outputs.id
+//output nsgID string = landingZoneNSG.outputs.nsgID

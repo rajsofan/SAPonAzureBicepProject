@@ -14,7 +14,7 @@ variables:
     azureServiceConnection: 'AzlabBicep'
     resourceGroupName: 'RG-UKS-ENGINE-LZ1-NETWORK-01'
     location: 'uksouth'
-    templateFile: '/Users/rajdeep/Desktop/Repository/SAPonAZUREARM/Modules/Solution Modules/s4hana.solution.bicep'
+    templateFile: './Modules/Solution Modules/s4hana.solution.bicep'
 pool:
     vmImage: $(vmImageName)
 

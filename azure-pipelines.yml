@@ -11,10 +11,10 @@ name: Deploy Bicep files
 variables:
     vmImageName: 'ubuntu-latest'
 
-    azureServiceConnection: 'myServiceConnection'
-    resourceGroupName: 'Bicep'
-    location: 'eastus'
-    templateFile: 'main.bicep'
+    azureServiceConnection: 'AzlabBicep'
+    resourceGroupName: 'RG-UKS-ENGINE-LZ1-NETWORK-01'
+    location: 'uksouth'
+    templateFile: 's4hana.solution.bicep'
 pool:
     vmImage: $(vmImageName)
 

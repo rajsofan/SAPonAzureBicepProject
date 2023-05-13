@@ -147,8 +147,6 @@ resource volume 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes@2020-06-0
     subnetId: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetName)
     snapshotDirectoryVisible: snapshotDirectoryVisible
   }
-  dependsOn: [
-    resourceId('Microsoft.NetApp/netAppAccounts/capacityPools', netAppAccountName, netAppPoolName)
-    virtualNetwork
-  ]
+ 
+  
 }

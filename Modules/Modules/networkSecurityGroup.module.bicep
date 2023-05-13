@@ -19,38 +19,50 @@
 
 */
 
-param networkSecurityGroupNmae string = 'NSG-${uniqueString(resourceGroup().id)}'
-param isDiagEnabled bool = false
-param LAWworkspaceID string
+param networkSecurityGroupNmae string
+param location string
+//param securityRules array = []
 
-param securityRules array = []
+var osSecurityRules = {
 
-resource nsg 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
+  Linux: [
+    {
+      name: 'SSH'
+      properties: {
+        description: 'Allow SSH Subnet'
+        protocol: 'Tcp'
+        sourcePortRange: '*'
+        destinationPortRange: '22'
+        sourceAddressPrefix: '*'
+        destinationAddressPrefix: '*'
+        access: 'Allow'
+        priority: 100
+        direction: 'Inbound'
+      }
+    }
+  ]
+}
+resource NetworkSecGrp 'Microsoft.Network/networkSecurityGroups@2022-07-01' = {
   name: networkSecurityGroupNmae
-  location: resourceGroup().location
-  properties: {
-    securityRules: securityRules
+  location: location
+  properties: { 
+     securityRules: [
+     {name: 'SSH'
+      properties: {
+        description: 'Allow SSH Subnet'
+        protocol: 'Tcp'
+        sourcePortRange: '*'
+        destinationPortRange: '22'
+        sourceAddressPrefix: '*'
+        destinationAddressPrefix: '*'
+        access: 'Allow'
+        priority: 100
+        direction: 'Inbound' 
+      }
+    }
+     ]
   }
 }
 
-resource service 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if(isDiagEnabled){
-  name: 'setbypolicy'
-  scope: nsg
-  properties: {
-    workspaceId: LAWworkspaceID
-    logs: [
-      {
-        category: 'NetworkSecurityGroupEvent'
-        enabled: true
-      
-      }
-      {
-        category: 'NetworkSecurityGroupRuleCounter'
-        enabled: true
-      }
-    ]
-  }
 
-}
-
-output nsgID string = nsg.id
+output nsgID string = NetworkSecGrp.id

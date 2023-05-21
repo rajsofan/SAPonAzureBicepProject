@@ -10,7 +10,7 @@ param subnetNames array = [
   'Anf'
   'Managment'
 ]
-
+param nsgId string
 param vnetName string
 
 resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
@@ -26,6 +26,9 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-07-01' = {
         name:subnetName
         properties: {
           addressPrefix: '10.0.${i}.0/24'
+          networkSecurityGroup: {
+             id:nsgId
+          }
         }
       }]
   }

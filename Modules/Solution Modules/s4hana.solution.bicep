@@ -66,6 +66,7 @@ module SAPVnet '../Modules/vnet.module.bicep' = {
   params: {
     vnetName: vnetName
     location: location
+    nsgId: SAPNSGRules.outputs.nsgID
   }
 }
 
@@ -86,6 +87,7 @@ module SAPVm '../Modules/SAPvm.module.bicep' = {
     vnetResourceGroup: SAPS4HANARGName
     virtualMachinePassword: VirtualMachinePassword
     virtualMachineCount: 2
+    
   }
 }
 
@@ -105,5 +107,34 @@ module publicip '../Modules/publicip.module.bicep' = {
     location: location
     publicIPAddresses: pubIpName
   }
+  
 
 }
+
+
+
+
+
+/*
+module jumpservervm '../Modules/SAPvm.module.bicep' = {
+  scope: resourceGroup(SAPS4HANARGName)
+  dependsOn: [
+    SAPVm
+  ]
+  name: jumpserverVMName
+  params: {
+    availabilitySetName: avsetNameJmpSrvr  
+    location: location
+    publicIPID: pubipID
+    SAPVmName: jumpserverVMName
+    subnetName: 'Managment'
+    usePublicIP: true
+    virtualMachinePassword: VirtualMachineUserName
+    virtualMachineUserName: VirtualMachinePassword
+    vNetName: vnetName
+    vnetResourceGroup: SAPS4HANARGName 
+  }
+}
+
+*/
+

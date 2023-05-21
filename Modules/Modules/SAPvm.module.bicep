@@ -20,6 +20,7 @@ param vNetName string
 param subnetName string
 param virtualMachineCount int = 2
 
+
 var images = {
   'Windows Server 2012 Datacenter': {
     sku: '2012-Datacenter'
@@ -84,8 +85,8 @@ param dataDisk array = [
     diskSizeGB: 512
     managedDisk: {
       storageAccountType: 'StandardSSD_LRS'
+    }
   }
- } 
   {
     lun: 1
     caching: 'ReadOnly'
@@ -93,8 +94,8 @@ param dataDisk array = [
     diskSizeGB: 512
     managedDisk: {
       storageAccountType: 'StandardSSD_LRS'
+    }
   }
-} 
   {
     lun: 2
     caching: 'ReadOnly'
@@ -102,8 +103,8 @@ param dataDisk array = [
     diskSizeGB: 512
     managedDisk: {
       storageAccountType: 'StandardSSD_LRS'
+    }
   }
-}
   {
     lun: 3
     caching: 'ReadOnly'
@@ -111,8 +112,8 @@ param dataDisk array = [
     diskSizeGB: 512
     managedDisk: {
       storageAccountType: 'StandardSSD_LRS'
+    }
   }
-}
   {
     lun: 4
     caching: 'ReadOnly'
@@ -120,9 +121,9 @@ param dataDisk array = [
     diskSizeGB: 512
     managedDisk: {
       storageAccountType: 'StandardSSD_LRS'
-    
+
+    }
   }
-}
   {
     lun: 5
     caching: 'ReadOnly'
@@ -130,8 +131,8 @@ param dataDisk array = [
     diskSizeGB: 512
     managedDisk: {
       storageAccountType: 'StandardSSD_LRS'
+    }
   }
-}
   {
     lun: 6
     caching: 'ReadOnly'
@@ -139,17 +140,17 @@ param dataDisk array = [
     diskSizeGB: 512
     managedDisk: {
       storageAccountType: 'StandardSSD_LRS'
+    }
   }
-}
- {
+  {
     lun: 7
     caching: 'ReadOnly'
     createOption: 'Empty'
     diskSizeGB: 512
     managedDisk: {
       storageAccountType: 'StandardSSD_LRS'
+    }
   }
-}
 ]
 
 var subnetRef = resourceId(vnetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
@@ -159,102 +160,103 @@ var subnetRef = resourceId(vnetResourceGroup, 'Microsoft.Network/virtualNetworks
 resource AvailabilitySetName 'Microsoft.Compute/availabilitySets@2023-03-01' = {
   name: availabilitySetName
   sku: {
-     name: 'Aligned'
+    name: 'Aligned'
   }
   location: location
   properties: {
-     platformFaultDomainCount:availabilitySetPlatformDefaultDomainCount
-     platformUpdateDomainCount: availabilitySetPlatformUpdateDomainCount
+    platformFaultDomainCount: availabilitySetPlatformDefaultDomainCount
+    platformUpdateDomainCount: availabilitySetPlatformUpdateDomainCount
 
   }
 }
-  
-    
+
 //Vm Resource Section
 
-resource SAPVMNic 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in range(0,virtualMachineCount):{
-  name: '${SAPVmName}-${i+1}-nic1'
+resource SAPVMNic 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in range(0, virtualMachineCount): {
+  name: '${SAPVmName}-${i + 1}-nic1'
   location: location
   dependsOn: [
     AvailabilitySetName
   ]
   properties: {
-     ipConfigurations: [
-       {
-         name: 'ipconfig1'
-         properties: {
-           privateIPAllocationMethod: 'Dynamic'
-           subnet: {
-             id:subnetRef
-           }
-         }
-       }
-     ]
+    ipConfigurations: [
+      {
+        name: 'ipconfig1'
+        properties: {
+          privateIPAllocationMethod: 'Dynamic'
+          subnet: {
+            id: subnetRef
+          }
+          
+        }
+       
+      }
+
+
+
+      
+    ]
   }
 }]
 
-resource SAPVm1  'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range (0, virtualMachineCount):{
-  name: '${SAPVmName}-${i+1}'
-   
+resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range(0, virtualMachineCount): {
+  name: '${SAPVmName}-${i + 1}'
+
   dependsOn: [
     SAPVMNic
   ]
   location: location
   properties: {
-     hardwareProfile: {
-       vmSize: SAPVmSize
-       
-     }
+    hardwareProfile: {
+      vmSize: SAPVmSize
 
-     
-     osProfile: {
-       adminUsername: virtualMachineUserName
-       adminPassword: virtualMachinePassword
-       computerName:'${SAPVmName}-${i+1}'
-       linuxConfiguration: {
-         disablePasswordAuthentication: false
-         
-       }
-        
-     }
-     networkProfile: {
-       networkInterfaces: [
-         {
-           id: resourceId('Microsoft.Network/networkInterfaces', '${SAPVmName}-${i+1}-nic1')
-         }
-       ]
-     }
-     availabilitySet: {
-       id: AvailabilitySetName.id
-     }
-     diagnosticsProfile: {
-       bootDiagnostics: {
-         enabled: false
-       }
-     }
-     storageProfile: {
+    }
 
-       osDisk: {
-        name: '${SAPVmName}-${i+1}-osdisk' 
+    osProfile: {
+      adminUsername: virtualMachineUserName
+      adminPassword: virtualMachinePassword
+      computerName: '${SAPVmName}-${i + 1}'
+      linuxConfiguration: {
+        disablePasswordAuthentication: false
+
+      }
+
+    }
+    networkProfile: {
+      networkInterfaces: [
+        {
+          id: resourceId('Microsoft.Network/networkInterfaces', '${SAPVmName}-${i + 1}-nic1')
+        }
+      ]
+    }
+    availabilitySet: {
+      id: AvailabilitySetName.id
+    }
+    diagnosticsProfile: {
+      bootDiagnostics: {
+        enabled: false
+      }
+    }
+    storageProfile: {
+
+      osDisk: {
+        name: '${SAPVmName}-${i + 1}-osdisk'
         createOption: 'FromImage'
         caching: 'ReadWrite'
         managedDisk: {
-           storageAccountType: 'StandardSSD_LRS'
+          storageAccountType: 'StandardSSD_LRS'
         }
-       }
-       imageReference: {
-         publisher: images[operatingSystemType].publisher
-         offer: images[operatingSystemType].offer
-         sku: images[operatingSystemType].sku
-         version:'latest'
-       }
-        dataDisks: dataDisk
-           
-        
-      
-     }
+      }
+      imageReference: {
+        publisher: images[operatingSystemType].publisher
+        offer: images[operatingSystemType].offer
+        sku: images[operatingSystemType].sku
+        version: 'latest'
+      }
+      dataDisks: dataDisk
+
+    }
   }
 }]
-
 
 output availabilitySetID string = AvailabilitySetName.id

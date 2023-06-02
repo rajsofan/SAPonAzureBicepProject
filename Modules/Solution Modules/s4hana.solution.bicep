@@ -111,17 +111,18 @@ module publicip '../Modules/publicip.module.bicep' = {
 
 }
 
-
+//Keyvault parameters
+param sapKvName string = 'sapkvm${uniqueString(SAPSID)}'
 module sapkvm '../Modules/keyvault.module.bicep' = {
   scope: resourceGroup(SAPS4HANARGName)
   dependsOn: [
     SAPResourceGroup
   ]
-  name: 'sapkvm1234'
+  name: sapKvName
   params: {
-    vmPassword: VirtualMachineUserName 
-    vmUserName: VirtualMachinePassword
-    keyvaultName: 'sapkvm1234'
+    vmPassword: VirtualMachinePassword
+    vmUserName: VirtualMachineUserName
+    keyvaultName: sapKvName
     location:location
     
   }

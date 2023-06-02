@@ -48,11 +48,19 @@ param vmUserName string
 @secure()
 param vmPassword string
 
-resource vmserets 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
+resource vmsecrets1 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
   parent: secretsvault
   name: 'vmUsername'
   properties: {
      value: vmUserName
+    
+      }
   }
 
-}
+ resource vmsecrets2 'Microsoft.KeyVault/vaults/secrets@2023-02-01' = {
+  name: 'vmPassword'
+  parent: secretsvault
+  properties: {
+    value: vmPassword
+  }
+ }

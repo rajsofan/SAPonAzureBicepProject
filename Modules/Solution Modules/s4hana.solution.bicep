@@ -112,7 +112,20 @@ module publicip '../Modules/publicip.module.bicep' = {
 }
 
 
-
+module sapkvm '../Modules/keyvault.module.bicep' = {
+  scope: resourceGroup(SAPS4HANARGName)
+  dependsOn: [
+    SAPResourceGroup
+  ]
+  name: 'sapkvm1234'
+  params: {
+    vmPassword: VirtualMachineUserName 
+    vmUserName: VirtualMachinePassword
+    keyvaultName: 'sapkvm1234'
+    location:location
+    
+  }
+}
 
 
 /*

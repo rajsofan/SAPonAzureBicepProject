@@ -4,7 +4,7 @@ pool:
   vmImage: ubuntu-latest
 
 jobs:
- - job:
-    steps:
+- job:
+  steps:
     - script: echo hello world !
       displayName: 'Placeholder step'

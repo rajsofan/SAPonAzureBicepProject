@@ -4,7 +4,12 @@ pool:
   vmImage: ubuntu-latest
 
 jobs:
-- job:
+- job: deploy
   steps:
-    - script: echo hello world !
-      displayName: 'Placeholder step'
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        connectedServiceName: $(ServiceConnectioName)
+        deploymentName: $(Build.BuildNumber)
+        csmFile: Modules/Solution Modules/s4hana.solution.bicep
+        overrideParameters: >
+          

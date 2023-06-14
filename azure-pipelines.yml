@@ -18,6 +18,6 @@ jobs:
           subscriptionId: 'a14b6fe5-f739-4b09-a63a-99171f6f2984'
           location: 'UK South'
           templateLocation: 'Linked artifact'
-          csmFile: '/Modules/Solution Modules/s4hana.solution.bicep'
-          csmParametersFile: '/Modules/Solution Modules/s4hana.solution.parameters.json'
+          csmFile: 'https://dev.azure.com/AzDevOpsIAC/azdevopsbicep/_git/SAPonAZUREARM?path=Modules/Solution%20Modules/s4hana.solution.bicep&version=GCb7372e14c1d18e9f755477aa1aee4dc6f3f9b8c9&_a=contents'
+          csmParametersFile: 'https://dev.azure.com/AzDevOpsIAC/azdevopsbicep/_git/SAPonAZUREARM?path=Modules/Solution%20Modules/s4hana.solution.parameters.json&version=GCd9a19d06c622e14629ddd9a629f1e8032ee791eb&_a=contents'
           deploymentMode: 'Incremental'

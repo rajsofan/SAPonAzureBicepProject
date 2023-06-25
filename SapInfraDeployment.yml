@@ -5,19 +5,20 @@
 
 trigger: none
 
+name: Deploy Bicep files
+
 pool:
   vmImage: ubuntu-latest
 
-jobs:
-  - job: 'Deploy SAP Infra for test'
-    steps:
-    - task: AzureCLI@2
-      displayName: 'Azure CLI '
-      inputs:
-       azureSubscription: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
-       scriptType: pscore
-       scriptLocation: inlineScript
-       inlineScript: 'az deployment sub create --location uksouth  --template-file s4hana.solution.bicep --parameters s4hana.solution.parameters.json'
-       workingDirectory: 'Modules/Solution Modules'
-       env: dev
-       location: uksouth
+
+steps:
+ - task: AzureCLI@2
+   displayName: 'Azure CLI '
+   inputs:
+     azureSubscription: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
+     scriptType: pscore
+     scriptLocation: inlineScript
+     inlineScript: 'az deployment sub create --location uksouth  --template-file s4hana.solution.bicep --parameters s4hana.solution.parameters.json'
+     workingDirectory: 'Modules/Solution Modules'
+     env: dev
+     location: uksouth

@@ -9,15 +9,16 @@ pool:
   vmImage: ubuntu-latest
 
 jobs:
-  - job: 'Deploy'
+  - job: 'Deploy SAP Infra for test'
     steps:
-      - task: AzureResourceManagerTemplateDeployment@3
-      - displayName: 'Deploy the Bicep Code'
-        inputs:
-          azureResourceManagerConnection: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
-          subscriptionId: 'a14b6fe5-f739-4b09-a63a-99171f6f2984'
-          location: 'UK South'
-          templateLocation: 'Linked artifact'
-          csmFile: '/Modules/Solution Modules/s4hana.solution.bicep'
-          csmParametersFile: '/Modules/Solution Modules/s4hana.solution.parameters.bicep'
-          deploymentMode: 'Incremental'
+      steps:
+       - task: AzureCLI@2
+         displayName: 'Azure CLI '
+      inputs:
+       azureSubscription: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
+       scriptType: pscore
+       scriptLocation: inlineScript
+       inlineScript: 'az deployment sub create --location uksouth  --template-file s4hana.solution.bicep --parameters s4hana.solution.parameters.json'
+       workingDirectory: 'Modules/Solution Modules'
+       env:
+       location: uksouth

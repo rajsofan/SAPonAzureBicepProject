@@ -112,7 +112,7 @@ module publicip '../Modules/publicip.module.bicep' = {
 }
 
 //Keyvault parameters
-param sapKvName string = 'sapkvm${uniqueString(SAPSID)}'
+param sapKvName string = 'sapkvm${uniqueString(utcNow())}'
 module sapkvm '../Modules/keyvault.module.bicep' = {
   scope: resourceGroup(SAPS4HANARGName)
   dependsOn: [

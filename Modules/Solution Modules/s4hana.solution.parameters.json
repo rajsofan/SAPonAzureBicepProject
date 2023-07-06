@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "VirtualMachineUserName": {
-      "value": "Adminuser"
+      "value": "adminuser"
     },
     "VirtualMachinePassword": {
       "value": "Welcome@12345678"

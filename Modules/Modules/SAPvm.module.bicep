@@ -170,7 +170,6 @@ resource AvailabilitySetName 'Microsoft.Compute/availabilitySets@2023-03-01' = {
   }
 }
 
-param pubIPAddressID array = []
 
 //Vm Resource Section
 
@@ -190,9 +189,7 @@ resource SAPVMNic 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in r
           subnet: {
             id: subnetRef
           }
-          publicIPAddress: {
-             id: pubIPAddressID
-          }
+          
         }
         
       }

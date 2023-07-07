@@ -1,13 +1,12 @@
 /*
-Deploys a single Vnet with one or more subnets.If no parameters are provided a default address space is taken and outputs the Vnet ID and
- array containing all the subnets 
+Single VM
  */
 
 //VM Parameters
 
-param SAPVmName string
+param jmpVmName string
 param location string
-param SAPVmSize string = 'Standard_D4as_v4'
+param jmpVmSize string = 'Standard_D4as_v4'
 param virtualMachineUserName string
 @secure()
 param virtualMachinePassword string
@@ -170,12 +169,12 @@ resource AvailabilitySetName 'Microsoft.Compute/availabilitySets@2023-03-01' = {
   }
 }
 
-param pubIPAddressID array = []
+param pubIPAddressID string
 
 //Vm Resource Section
 
 resource SAPVMNic 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in range(0, virtualMachineCount): {
-  name: '${SAPVmName}-${i + 1}-nic1'
+  name: '${jmpVmName}-${i + 1}-nic1'
   location: location
   dependsOn: [
     AvailabilitySetName
@@ -201,8 +200,8 @@ resource SAPVMNic 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in r
   }
 }]
 
-resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range(0, virtualMachineCount): {
-  name: '${SAPVmName}-${i + 1}'
+resource jmpVM 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range(0, virtualMachineCount): {
+  name: '${jmpVmName}-${i + 1}'
 
   dependsOn: [
     SAPVMNic
@@ -210,14 +209,14 @@ resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range
   location: location
   properties: {
     hardwareProfile: {
-      vmSize: SAPVmSize
+      vmSize: jmpVmSize
 
     }
 
     osProfile: {
       adminUsername: virtualMachineUserName
       adminPassword: virtualMachinePassword
-      computerName: '${SAPVmName}-${i + 1}'
+      computerName: '${jmpVmName}-${i + 1}'
       linuxConfiguration: {
         disablePasswordAuthentication: false
 
@@ -227,7 +226,7 @@ resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range
     networkProfile: {
       networkInterfaces: [
         {
-          id: resourceId('Microsoft.Network/networkInterfaces', '${SAPVmName}-${i + 1}-nic1')
+          id: resourceId('Microsoft.Network/networkInterfaces', '${jmpVmName}-${i + 1}-nic1')
         }
       ]
     }
@@ -242,7 +241,7 @@ resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range
     storageProfile: {
 
       osDisk: {
-        name: '${SAPVmName}-${i + 1}-osdisk'
+        name: '${jmpVmName}-${i + 1}-osdisk'
         createOption: 'FromImage'
         caching: 'ReadWrite'
         managedDisk: {

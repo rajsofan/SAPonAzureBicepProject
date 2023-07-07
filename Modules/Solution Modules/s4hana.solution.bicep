@@ -111,6 +111,7 @@ module publicip '../Modules/publicip.module.bicep' = {
 
 }
 
+
 //Keyvault parameters
 param sapKvName string = 'sapkvm${uniqueString(utcNow())}'
 module sapkvm '../Modules/keyvault.module.bicep' = {
@@ -129,26 +130,25 @@ module sapkvm '../Modules/keyvault.module.bicep' = {
 }
 
 
-/*
-module jumpservervm '../Modules/SAPvm.module.bicep' = {
+//Jumpserver paramters
+param jumpserverVMName string = 'sapdeploy${Environment}${SAPSID}'
+param avsetNameJmpSrvr string = 'avset${Environment}${SAPSID}'
+
+module jumpservervm '../Modules/jmpServer.module.bicep' = {
   scope: resourceGroup(SAPS4HANARGName)
-  dependsOn: [
-    SAPVm
-  ]
   name: jumpserverVMName
   params: {
-    availabilitySetName: avsetNameJmpSrvr  
+    availabilitySetName: avsetNameJmpSrvr
+    jmpVmName: jumpserverVMName
     location: location
-    publicIPID: pubipID
-    SAPVmName: jumpserverVMName
     subnetName: 'Managment'
-    usePublicIP: true
-    virtualMachinePassword: VirtualMachineUserName
-    virtualMachineUserName: VirtualMachinePassword
+    virtualMachinePassword: VirtualMachinePassword
+    virtualMachineUserName: VirtualMachineUserName
     vNetName: vnetName
-    vnetResourceGroup: SAPS4HANARGName 
+    vnetResourceGroup: SAPS4HANARGName
+     pubIPAddressID:publicip.outputs.PubIpID
   }
 }
 
-*/
+
 

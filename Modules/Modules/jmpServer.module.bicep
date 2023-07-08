@@ -10,7 +10,7 @@ param jmpVmSize string
 param virtualMachineUserName string
 @secure()
 param virtualMachinePassword string
-param operatingSystemType string = 'SLES 12'
+param operatingSystemType string = 'Ubuntu Server'
 param availabilitySetName string
 param availabilitySetPlatformDefaultDomainCount int = 2
 param availabilitySetPlatformUpdateDomainCount int = 5
@@ -56,6 +56,13 @@ var images = {
     offer: 'Oracle-Linux'
     publisher: 'Oracle'
     OSType: 'Linux'
+  }
+   'Ubuntu Server': {
+    sku: '18.04-LTS'
+    offer: 'UbuntuServer'
+    publisher: 'Canonical'
+    OSType: 'Linux'
+
   }
 }
 

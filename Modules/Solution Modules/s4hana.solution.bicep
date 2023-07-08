@@ -133,8 +133,11 @@ module sapkvm '../Modules/keyvault.module.bicep' = {
 //Jumpserver paramters
 param jumpserverVMName string = 'sapdeploy${Environment}${SAPSID}'
 param avsetNameJmpSrvr string = 'avset${Environment}${SAPSID}'
-
+param jmpVmSize string = 'Standard_B2s'
 module jumpservervm '../Modules/jmpServer.module.bicep' = {
+  dependsOn: [
+    publicip
+  ]
   scope: resourceGroup(SAPS4HANARGName)
   name: jumpserverVMName
   params: {
@@ -146,7 +149,9 @@ module jumpservervm '../Modules/jmpServer.module.bicep' = {
     virtualMachineUserName: VirtualMachineUserName
     vNetName: vnetName
     vnetResourceGroup: SAPS4HANARGName
-     pubIPAddressID:publicip.outputs.PubIpID
+    pubIPAddressID:publicip.outputs.PubIpID
+    virtualMachineCount:1
+    jmpVmSize:jmpVmSize
   }
 }
 

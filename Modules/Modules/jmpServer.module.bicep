@@ -6,7 +6,7 @@ Single VM
 
 param jmpVmName string
 param location string
-param jmpVmSize string = 'Standard_D4as_v4'
+param jmpVmSize string
 param virtualMachineUserName string
 @secure()
 param virtualMachinePassword string
@@ -76,82 +76,7 @@ var images = {
 ])
 //param osType string = 'SLES 12'
 */
-param dataDisk array = [
-  {
-    lun: 0
-    caching: 'ReadOnly'
-    createOption: 'Empty'
-    diskSizeGB: 512
-    managedDisk: {
-      storageAccountType: 'StandardSSD_LRS'
-    }
-  }
-  {
-    lun: 1
-    caching: 'ReadOnly'
-    createOption: 'Empty'
-    diskSizeGB: 512
-    managedDisk: {
-      storageAccountType: 'StandardSSD_LRS'
-    }
-  }
-  {
-    lun: 2
-    caching: 'ReadOnly'
-    createOption: 'Empty'
-    diskSizeGB: 512
-    managedDisk: {
-      storageAccountType: 'StandardSSD_LRS'
-    }
-  }
-  {
-    lun: 3
-    caching: 'ReadOnly'
-    createOption: 'Empty'
-    diskSizeGB: 512
-    managedDisk: {
-      storageAccountType: 'StandardSSD_LRS'
-    }
-  }
-  {
-    lun: 4
-    caching: 'ReadOnly'
-    createOption: 'Empty'
-    diskSizeGB: 512
-    managedDisk: {
-      storageAccountType: 'StandardSSD_LRS'
-
-    }
-  }
-  {
-    lun: 5
-    caching: 'ReadOnly'
-    createOption: 'Empty'
-    diskSizeGB: 512
-    managedDisk: {
-      storageAccountType: 'StandardSSD_LRS'
-    }
-  }
-  {
-    lun: 6
-    caching: 'ReadOnly'
-    createOption: 'Empty'
-    diskSizeGB: 512
-    managedDisk: {
-      storageAccountType: 'StandardSSD_LRS'
-    }
-  }
-  {
-    lun: 7
-    caching: 'ReadOnly'
-    createOption: 'Empty'
-    diskSizeGB: 512
-    managedDisk: {
-      storageAccountType: 'StandardSSD_LRS'
-    }
-  }
-]
-
+param dataDisk array = []
 var subnetRef = resourceId(vnetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
 
 //Availability Set

@@ -137,6 +137,7 @@ param jmpVmSize string = 'Standard_B2s'
 module jumpservervm '../Modules/jmpServer.module.bicep' = {
   dependsOn: [
     publicip
+    SAPVnet
   ]
   scope: resourceGroup(SAPS4HANARGName)
   name: jumpserverVMName

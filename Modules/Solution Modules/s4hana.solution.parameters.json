@@ -7,6 +7,9 @@
     },
     "VirtualMachinePassword": {
       "value": "Welcome@12345678"
+    },
+    "AutomationAccountName": {
+      "value": "sapDeployAutomationAccount"
     }
   }
 }

@@ -156,5 +156,41 @@ module jumpservervm '../Modules/jmpServer.module.bicep' = {
   }
 }
 
+//Automation Account Parameter
+param AutomationAccountName string
 
 
+
+//Create Automation account
+
+module sapAutomatioAccount '../Modules/Automationaccount.module.bicep' = {
+  scope: resourceGroup(SAPS4HANARGName)
+  dependsOn: [
+     SAPResourceGroup
+  ]
+  name:AutomationAccountName 
+  params: {
+    automationAccountName: AutomationAccountName
+    location: location
+  }
+}
+
+//Loadbalancer parameter
+
+param loadbalancerName string  = 'sapascsfrontend'
+
+//create a loabalancer
+
+module vmlbsap  '../Modules/Loadbalancer.module.bicep' = {
+  scope: resourceGroup(SAPS4HANARGName)
+  dependsOn: [
+     SAPResourceGroup
+  ]
+  name: loadbalancerName
+  params: {
+    loadBalancerName: loadbalancerName
+    location: location
+    subnetName: 'Application'
+    VnetName: vnetName
+  }
+}

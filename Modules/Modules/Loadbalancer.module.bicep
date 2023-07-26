@@ -70,3 +70,6 @@ resource sapInternalLB 'Microsoft.Network/loadBalancers@2022-11-01' = {
       // ]
    }
 }
+
+
+output lbid string = sapInternalLB.id

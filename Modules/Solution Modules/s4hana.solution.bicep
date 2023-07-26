@@ -1,5 +1,5 @@
 //Deployment Scope
-
+param sapVMName string = 'VM-${SAPSolutionName}-${SAPSID}'
 targetScope = 'subscription'
 //Global Parameters
 @description('Specify the SAP System Identifier number for your landscape')
@@ -18,7 +18,7 @@ param resourceTags object = {
   Location: location
 }
 
-
+var loadbalancerBackendName = '${loadbalancerName}-backend'
 param VirtualMachineUserName string
 @secure()
 param VirtualMachinePassword string
@@ -76,17 +76,19 @@ module SAPVm '../Modules/SAPvm.module.bicep' = {
     SAPVnet
   ]
 
-  name: 'VM-${SAPSolutionName}-${SAPSID}'
+  name: sapVMName
   params: {
     availabilitySetName: 'avset-${SAPSolutionName}-${SAPSID}'
     location: location
-    SAPVmName: 'VM-${SAPSolutionName}-${SAPSID}'
     subnetName: 'Application'
     virtualMachineUserName: VirtualMachineUserName
     vNetName: vnetName
     vnetResourceGroup: SAPS4HANARGName
     virtualMachinePassword: VirtualMachinePassword
     virtualMachineCount: 2
+    Environment: Environment
+    loadBalancerName: loadbalancerName
+    loadbalancerBackendName: loadbalancerBackendName
     
   }
 }
@@ -181,10 +183,11 @@ param loadbalancerName string  = 'sapascsfrontend'
 
 //create a loabalancer
 
-module vmlbsap  '../Modules/Loadbalancer.module.bicep' = {
+module vmlbsap  '../Modules/Loadbalancer.module.bicep'= if (Environment == 'QAS') {
   scope: resourceGroup(SAPS4HANARGName)
   dependsOn: [
      SAPResourceGroup
+     SAPVnet
   ]
   name: loadbalancerName
   params: {
@@ -194,3 +197,6 @@ module vmlbsap  '../Modules/Loadbalancer.module.bicep' = {
     VnetName: vnetName
   }
 }
+
+
+output lbid string = vmlbsap.outputs.lbid

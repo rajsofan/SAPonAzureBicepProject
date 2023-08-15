@@ -8,7 +8,7 @@ Deploys a single Vnet with one or more subnets.If no parameters are provided a d
   'Prod'
   'SBX'
   'QAS' ])
-param Environment string = 'QAS'
+param Environment string
 param SAPSolutionName string = 'hana'
 param SAPSID string = 'S4Q'
 param sapVMName string = 'VM-${SAPSolutionName}-${SAPSID}'
@@ -180,36 +180,36 @@ resource AvailabilitySetName 'Microsoft.Compute/availabilitySets@2023-03-01' = {
 
 //Vm Resource Section
 
-var deploydevnic = Environment == 'Dev'
+// var deploydevnic = Environment == 'Dev'
 
-resource SAPVMNic 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in range(0, virtualMachineCount): if (deploydevnic){
-  name: '${sapVMName}-${i + 1}-nic1'
-  location: location
-  dependsOn: [
-    AvailabilitySetName
-  ]
-  properties: {
+// resource SAPVMNic 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in range(0, virtualMachineCount): if (deploydevnic){
+//   name: '${sapVMName}-${i + 1}-nic1'
+//   location: location
+//   dependsOn: [
+//     AvailabilitySetName
+//   ]
+//   properties: {
     
-    ipConfigurations: [
-      {
-        name: 'ipconfig1'
-        properties: {
-          privateIPAllocationMethod: 'Dynamic'
-          subnet: {
-            id: subnetRef
-          }
+//     ipConfigurations: [
+//       {
+//         name: 'ipconfig1'
+//         properties: {
+//           privateIPAllocationMethod: 'Dynamic'
+//           subnet: {
+//             id: subnetRef
+//           }
           
-        }
+//         }
         
-      }
-    ]
+//       }
+//     ]
   
-  }
-}]
+//   }
+// }]
 
-var deploqaynic = Environment == 'QAS'
 
-resource SAPVMNicQas 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in range(0, virtualMachineCount) : if (deploqaynic)  {
+
+resource SAPVMNicQas 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in range(0, virtualMachineCount)  : {
   
 
     name: '${sapVMName}-${i + 1}-nic1'
@@ -301,4 +301,12 @@ resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range
   }
 }]
 
-output availabilitySetID string = AvailabilitySetName.id
+
+
+// resource deplopmentScript 'Microsoft.Compute/virtualMachines/runCommands@2023-03-01' = {
+//   name:
+//   parent:  
+//   location: 
+// }
+
+// output availabilitySetID string = AvailabilitySetName.id

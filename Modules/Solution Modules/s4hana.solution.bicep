@@ -4,13 +4,13 @@ targetScope = 'subscription'
 //Global Parameters
 @description('Specify the SAP System Identifier number for your landscape')
 @maxLength(3)
-param SAPSID string = 'S4D'
+param SAPSID string = 'S4Q'
 @description('Specify the Environment type of the deployment')
 @allowed([ 'Dev'
   'Prod'
   'SBX'
   'QAS' ])
-param Environment string = 'Dev'
+param Environment string = 'QAS'
 param SAPSolutionName string = 'S4HANA'
 param resourceTags object = {
   Environment: Environment
@@ -74,6 +74,7 @@ module SAPVm '../Modules/SAPvm.module.bicep' = {
   scope: SAPResourceGroup
   dependsOn: [
     SAPVnet
+    vmlbsap
   ]
 
   name: sapVMName
@@ -183,7 +184,7 @@ param loadbalancerName string  = 'sapascsfrontend'
 
 //create a loabalancer
 
-module vmlbsap  '../Modules/Loadbalancer.module.bicep'= if (Environment == 'QAS') {
+module vmlbsap  '../Modules/Loadbalancer.module.bicep'=  {
   scope: resourceGroup(SAPS4HANARGName)
   dependsOn: [
      SAPResourceGroup

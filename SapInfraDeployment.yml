@@ -35,12 +35,12 @@ steps:
     inlineScript: 'az vm run-command invoke --command-id RunShellScript --name $(vm_name) -g $(rg_name) --scripts "sudo apt update"'
     powerShellErrorActionPreference: 'silentlyContinue'
 
-- task: AzureCLI@2
-  inputs:
-   azureSubscription: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
-   scriptType: 'pscore'
-   scriptLocation: 'inlineScript'
-   inlineScript: 'az vm run-command invoke --command-id RunShellScript --name $(vm_name) -g $(rg_name) --scripts "sudo apt install ansible"'
-   powerShellErrorActionPreference: 'silentlyContinue'
+-  task: AzureCLI@2
+   inputs:
+    azureSubscription: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az vm run-command invoke --command-id RunShellScript --name $(vm_name) -g $(rg_name) --scripts "sudo apt install ansible"'
+    powerShellErrorActionPreference: 'silentlyContinue'
      
 

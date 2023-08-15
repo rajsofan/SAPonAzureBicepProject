@@ -10,10 +10,15 @@ name: Deploy Bicep files
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  - name: vm_name
+    value: "sapdeployQASS4Q"
+  - name: rg_name
+    value: "RG-S4HANA-S4Q-QAS"
 
 steps:
  - task: AzureCLI@2
-   displayName: 'Azure CLI '
+   displayName: 'Deploy SAP Environment '
    inputs:
      azureSubscription: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
      scriptType: pscore
@@ -22,8 +27,12 @@ steps:
      workingDirectory: 'Modules/Solution Modules'
      
      
-
- - task: Bash@3
+ - task: AzureCLI@2
    inputs:
-    filePath: 'Ansible/ansible/configdeployer.sh'
+    azureSubscription: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az vm run-command invoke --command-id RunShellScript --name $(vm_name) -g $(rg_name) --scripts "sudo apt update"'
+    powerShellErrorActionPreference: 'silentlyContinue'
+     
 

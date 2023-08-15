@@ -12,7 +12,7 @@ pool:
 
 variables:
   - name: vm_name
-    value: "sapdeployQASS4Q"
+    value: "sapdeployQASS4Q-1"
   - name: rg_name
     value: "RG-S4HANA-S4Q-QAS"
 

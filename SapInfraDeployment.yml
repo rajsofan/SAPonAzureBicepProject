@@ -28,13 +28,21 @@ steps:
      
      
  - task: AzureCLI@2
-   displayName: 'Configure Ansible'
+   displayName: 'Upgrade Deployer OS'
    inputs:
     azureSubscription: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
-    inlineScript: 'az vm run-command invoke --command-id RunShellScript --name $(vm_name) -g $(rg_name) --scripts "sudo apt update && sudo apt upgrade -y && sudo apt install ansible -y"'
+    inlineScript: 'az vm run-command invoke --command-id RunShellScript --name $(vm_name) -g $(rg_name) --scripts "sudo apt update && sudo apt upgrade -y && sudo apt upgrade -y "'
     powerShellErrorActionPreference: 'silentlyContinue'
+    
+ - task: AzureCLI@2
+   displayName: 'Install Ansible'
+   inputs:
+    azureSubscription: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
+    scriptType: 'pscore'
+    scriptLocation: 'scriptPath'
+    scriptPath: 'az vm run-command invoke --command-id RunShellScript --name $(vm_name) -g $(rg_name) --scripts " sudo apt install ansible -y"'
 
 
 

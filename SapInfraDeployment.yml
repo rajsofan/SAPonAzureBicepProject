@@ -36,6 +36,7 @@ steps:
     inlineScript: 'az vm run-command invoke --command-id RunShellScript --name $(vm_name) -g $(rg_name) --scripts "sudo apt update && sudo apt upgrade -y && sudo apt upgrade -y "'
     powerShellErrorActionPreference: 'silentlyContinue'
     
+    
  - task: AzureCLI@2
    displayName: 'Install Ansible'
    inputs:

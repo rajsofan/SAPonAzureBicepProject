@@ -20,5 +20,10 @@ steps:
      scriptLocation: inlineScript
      inlineScript: 'az deployment sub create --location uksouth  --template-file s4hana.solution.bicep --parameters s4hana.solution.parameters.json'
      workingDirectory: 'Modules/Solution Modules'
-     env: dev
-     location: uksouth
+     
+     
+
+ - task: Bash@3
+   inputs:
+    filePath: 'Ansible/ansible/configdeployer.sh'
+

@@ -1,4 +1,6 @@
 //Deployment Scope
+
+param isSAPSpokeRequired bool = false
 param sapVMName string = 'VM-${SAPSolutionName}-${SAPSID}'
 targetScope = 'subscription'
 //Global Parameters
@@ -70,7 +72,7 @@ module SAPVnet '../Modules/vnet.module.bicep' = {
   }
 }
 
-module SAPVm '../Modules/SAPvm.module.bicep' = {
+module SAPVm '../Modules/SAPvm.module.bicep' = if(isSAPSpokeRequired){
   scope: SAPResourceGroup
   dependsOn: [
     SAPVnet
@@ -184,7 +186,7 @@ param loadbalancerName string  = 'sapascsfrontend'
 
 //create a loabalancer
 
-module vmlbsap  '../Modules/Loadbalancer.module.bicep'=  {
+module vmlbsap  '../Modules/Loadbalancer.module.bicep'=  if(isSAPSpokeRequired){
   scope: resourceGroup(SAPS4HANARGName)
   dependsOn: [
      SAPResourceGroup

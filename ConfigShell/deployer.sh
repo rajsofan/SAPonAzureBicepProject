@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export DEBIAN_FRONTEND=noninteractive
 # Update the Os
 sudo apt-get update
 sudo apt-get -y upgrade

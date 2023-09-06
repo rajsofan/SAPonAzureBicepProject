@@ -1,13 +1,14 @@
 #!/bin/bash
 
 export DEBIAN_FRONTEND=noninteractive
+export DEBIAN_PRIORITY=critical
 # Update the Os
 sudo apt-get update
 sudo apt-get -y upgrade
 
 # Install Ansible
 
-sudo apt install ansible -y
+sudo apt install ansible -yqq
 
 # Install Git
 

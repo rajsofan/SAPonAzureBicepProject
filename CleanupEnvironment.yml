@@ -1,0 +1,1 @@
+az group delete --name RG-S4HANA-S4Q-QAS --no-wait --yes

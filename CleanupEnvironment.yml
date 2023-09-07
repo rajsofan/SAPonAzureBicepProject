@@ -24,5 +24,3 @@ steps:
      inlineScript: 'az group delete --name $rg_name --no-wait --yes'
      workingDirectory: 'Modules/Solution Modules'
 
-
-az group delete --name RG-S4HANA-S4Q-QAS --no-wait --yes

@@ -2,7 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 export DEBIAN_PRIORITY=critical
-echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+sudo echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 # Update the Os
 sudo apt-get update
 sudo apt-get -y upgrade

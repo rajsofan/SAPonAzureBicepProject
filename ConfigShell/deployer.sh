@@ -2,7 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 export DEBIAN_PRIORITY=critical
-
+sudo apt-get install dialog apt-utils -y
 # Update the Os
 sudo apt-get update
 sudo apt-get -y upgrade

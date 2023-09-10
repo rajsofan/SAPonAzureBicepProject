@@ -4,16 +4,16 @@ export DEBIAN_FRONTEND=noninteractive
 export DEBIAN_PRIORITY=critical
 
 # Update the Os
-apt-get update
-apt-get -y upgrade
+sudo apt-get update
+sudo apt-get -y upgrade
 
 # Install Ansible
 
-apt-get install ansible -yqq
+sudo apt-get install ansible -yqq
 
 # Install Git
 
-apt-get install git -y
+sudo apt-get install git -y
 
 
 # Web Get the SelfhHosted agent

@@ -5,4 +5,5 @@ export DEBIAN_PRIORITY=critical
 sudo apt-get install dialog apt-utils -y
 
 
-~/myagent/config.sh --unattended --url https://dev.azure.com/AzDevOpsIAC --auth pat --token 4os3qekbpt5gzeb26lqqwyvorh5qvdzo25olxi76x2fnbntdpfhq --pool default --agent myAgent --acceptTeeEula
+~/myagent/config.sh --unattended --url https://dev.azure.com/AzDevOpsIAC --auth pat --token 4os3qekbpt5gzeb26lqqwyvorh5qvdzo25olxi76x2fnbntdpfhq --pool default --agent sapansibleagent --acceptTeeEula
+~/myagent/run.sh

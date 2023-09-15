@@ -1,6 +1,6 @@
 //Deployment Scope
 
-param isSAPSpokeRequired bool = false
+param isSAPSpokeRequired bool = true
 param sapVMName string = 'VM-${SAPSolutionName}-${SAPSID}'
 targetScope = 'subscription'
 //Global Parameters

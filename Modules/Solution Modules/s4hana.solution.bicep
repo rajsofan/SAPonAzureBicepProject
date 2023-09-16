@@ -184,22 +184,22 @@ module sapAutomatioAccount '../Modules/Automationaccount.module.bicep' = {
 
 param loadbalancerName string  = 'sapascsfrontend'
 
-// //create a loabalancer
+//create a loabalancer
 
-// module vmlbsap  '../Modules/Loadbalancer.module.bicep'=  if(isSAPSpokeRequired){
-//   scope: resourceGroup(SAPS4HANARGName)
-//   dependsOn: [
-//      SAPResourceGroup
-//      SAPVnet
-//   ]
-//   name: loadbalancerName
-//   params: {
-//     loadBalancerName: loadbalancerName
-//     location: location
-//     subnetName: 'Application'
-//     VnetName: vnetName
-//   }
-// }
+module vmlbsap  '../Modules/Loadbalancer.module.bicep'=  if(isSAPSpokeRequired){
+  scope: resourceGroup(SAPS4HANARGName)
+  dependsOn: [
+     SAPResourceGroup
+     SAPVnet
+  ]
+  name: loadbalancerName
+  params: {
+    loadBalancerName: loadbalancerName
+    location: location
+    subnetName: 'Application'
+    VnetName: vnetName
+  }
+}
 
 
-// output lbid string = vmlbsap.outputs.lbid
+output lbid string = vmlbsap.outputs.lbid

@@ -14,7 +14,7 @@ sudo apt-get install ansible -yqq
 # Install Git
 
 sudo apt-get install git -y
-
+git clone https://AzDevOpsIAC@dev.azure.com/AzDevOpsIAC/azdevopsbicep/_git/SAPonAZUREARM
 
 # Web Get the SelfhHosted agent
 

@@ -23,3 +23,6 @@ wget https://vstsagentpackage.azureedge.net/agent/3.225.0/vsts-agent-linux-x64-3
 mkdir myagent
 cd myagent
 tar zxvf ~/vsts-agent-linux-x64-3.225.0.tar.gz
+
+ssh-keygen -t ed25519 -C "ansible" -q -N '' -f "/home/adminuser/.ssh/ansible"
+

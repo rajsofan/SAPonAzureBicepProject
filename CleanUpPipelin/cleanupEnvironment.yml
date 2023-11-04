@@ -1,7 +1,7 @@
 # Pipline to deploy SAP resources for azure
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+# https://aka.ms/yamlv
 
 trigger: none
 
@@ -11,24 +11,15 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  - name: vm_name
-    value: "sapdeployQASS4Q-1"
   - name: rg_name
     value: "RG-S4HANA-S4Q-QAS"
 
 steps:
  - task: AzureCLI@2
-   displayName: 'Deploy SAP Environment '
+   displayName: 'Cleanup SAP Environment '
    inputs:
      azureSubscription: 'Rajdeep-AZLAB(a14b6fe5-f739-4b09-a63a-99171f6f2984)'
      scriptType: pscore
      scriptLocation: inlineScript
-     inlineScript: 'az deployment sub create --location uksouth  --template-file s4hana.solution.bicep --parameters s4hana.solution.parameters.json'
+     inlineScript: 'az group delete --name $rg_name --no-wait --yes'
      workingDirectory: 'Modules/Solution Modules'
-     
-     
-
-    
-    
- 
-

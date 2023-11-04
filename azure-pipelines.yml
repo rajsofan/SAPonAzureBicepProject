@@ -1,0 +1,26 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- None
+
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+  - job: RunConfigurationScript
+    displayName: 'Configure Deployer Machine to Self Hosted Agent'
+    steps:
+      - script: |
+        #!/bin/bash
+        export DEBIAN_FRONTEND=noninteractive
+        sudo apt-get update
+        sudo apt-get -y upgrade
+        sudo apt install ansible -y
+        sudo apt install git -y
+        wget https://vstsagentpackage.azureedge.net/agent/3.225.0/vsts-agent-linux-x64-3.225.0.tar.gz
+        mkdir myagent
+        cd myagent
+         tar zxvf ~/vsts-agent-linux-x64-3.225.0.tar.gz

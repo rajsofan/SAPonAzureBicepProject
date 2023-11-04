@@ -15,3 +15,6 @@ resource publicIPAddresses_s4dpubip_name_resource 'Microsoft.Network/publicIPAdd
     ipTags: []
   }
 }
+
+
+output PubIpID string = publicIPAddresses_s4dpubip_name_resource.id

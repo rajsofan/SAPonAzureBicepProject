@@ -4,8 +4,14 @@ Deploys a single Vnet with one or more subnets.If no parameters are provided a d
  */
 
 //VM Parameters
-
-param SAPVmName string
+@allowed([ 'Dev'
+  'Prod'
+  'SBX'
+  'QAS' ])
+param Environment string
+param SAPSolutionName string = 'hana'
+param SAPSID string = 'S4Q'
+param sapVMName string = 'VM-${SAPSolutionName}-${SAPSID}'
 param location string
 param SAPVmSize string = 'Standard_D4as_v4'
 param virtualMachineUserName string
@@ -19,7 +25,8 @@ param vnetResourceGroup string
 param vNetName string
 param subnetName string
 param virtualMachineCount int = 2
-
+param loadBalancerName string
+param loadbalancerBackendName string
 
 var images = {
   'Windows Server 2012 Datacenter': {
@@ -170,41 +177,76 @@ resource AvailabilitySetName 'Microsoft.Compute/availabilitySets@2023-03-01' = {
   }
 }
 
+
 //Vm Resource Section
 
-resource SAPVMNic 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in range(0, virtualMachineCount): {
-  name: '${SAPVmName}-${i + 1}-nic1'
-  location: location
-  dependsOn: [
-    AvailabilitySetName
-  ]
-  properties: {
-    ipConfigurations: [
-      {
-        name: 'ipconfig1'
-        properties: {
-          privateIPAllocationMethod: 'Dynamic'
-          subnet: {
-            id: subnetRef
+// var deploydevnic = Environment == 'Dev'
+
+// resource SAPVMNic 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in range(0, virtualMachineCount): if (deploydevnic){
+//   name: '${sapVMName}-${i + 1}-nic1'
+//   location: location
+//   dependsOn: [
+//     AvailabilitySetName
+//   ]
+//   properties: {
+    
+//     ipConfigurations: [
+//       {
+//         name: 'ipconfig1'
+//         properties: {
+//           privateIPAllocationMethod: 'Dynamic'
+//           subnet: {
+//             id: subnetRef
+//           }
+          
+//         }
+        
+//       }
+//     ]
+  
+//   }
+// }]
+
+
+
+resource SAPVMNicQas 'Microsoft.Network/networkInterfaces@2022-11-01' = [for i in range(0, virtualMachineCount)  : {
+  
+
+    name: '${sapVMName}-${i + 1}-nic1'
+    location: location
+    dependsOn: [
+      AvailabilitySetName
+    ]
+    properties: {
+      
+      ipConfigurations: [
+        {
+          name: 'ipconfig1'
+          properties: {
+            privateIPAllocationMethod: 'Dynamic'
+            subnet: {
+              id: subnetRef
+            }
+           loadBalancerBackendAddressPools: [
+             {
+               id: resourceId('Microsoft.Network/loadBalancers/backendAddressPools', loadBalancerName, loadbalancerBackendName)
+             }
+           ]
+            
           }
           
         }
-       
-      }
-
-
-
-      
-    ]
-  }
-}]
+      ]
+    
+    }
+  }]
 
 resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range(0, virtualMachineCount): {
-  name: '${SAPVmName}-${i + 1}'
-
+  name: '${sapVMName}-${i + 1}'
   dependsOn: [
-    SAPVMNic
+    SAPVMNicQas
   ]
+  
   location: location
   properties: {
     hardwareProfile: {
@@ -215,7 +257,7 @@ resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range
     osProfile: {
       adminUsername: virtualMachineUserName
       adminPassword: virtualMachinePassword
-      computerName: '${SAPVmName}-${i + 1}'
+      computerName: '${sapVMName}-${i + 1}'
       linuxConfiguration: {
         disablePasswordAuthentication: false
 
@@ -225,7 +267,7 @@ resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range
     networkProfile: {
       networkInterfaces: [
         {
-          id: resourceId('Microsoft.Network/networkInterfaces', '${SAPVmName}-${i + 1}-nic1')
+          id: resourceId('Microsoft.Network/networkInterfaces', '${sapVMName}-${i + 1}-nic1')
         }
       ]
     }
@@ -240,7 +282,7 @@ resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range
     storageProfile: {
 
       osDisk: {
-        name: '${SAPVmName}-${i + 1}-osdisk'
+        name: '${sapVMName}-${i + 1}-osdisk'
         createOption: 'FromImage'
         caching: 'ReadWrite'
         managedDisk: {
@@ -259,4 +301,12 @@ resource SAPVm1 'Microsoft.Compute/virtualMachines@2023-03-01' = [for i in range
   }
 }]
 
-output availabilitySetID string = AvailabilitySetName.id
+
+
+// resource deplopmentScript 'Microsoft.Compute/virtualMachines/runCommands@2023-03-01' = {
+//   name:
+//   parent:  
+//   location: 
+// }
+
+// output availabilitySetID string = AvailabilitySetName.id
